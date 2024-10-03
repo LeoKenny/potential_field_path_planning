@@ -27,6 +27,7 @@ public:
 
   const std::size_t getCols() const;
   const std::size_t getRows() const;
+  const bool verify_out_of_bounds(const std::pair<int, int> &index) const;
 
   void fill(T value);
   Matrix<T> copy() const;

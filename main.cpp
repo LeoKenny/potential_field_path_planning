@@ -29,4 +29,19 @@ int main() {
   test3.fill(1);
   test3.copy_non_zero_values(test2);
   test3.print("test3.csv");
+
+  std::pair<int, int> pos1(1, 1);
+  auto res1 = test3.verify_out_of_bounds(pos1);
+  std::cout << "Verify out of bounds (" << pos1.first << "," << pos1.second
+            << "): " << res1 << std::endl;
+
+  std::pair<int, int> pos2(4, 2);
+  auto res2 = test3.verify_out_of_bounds(pos2);
+  std::cout << "Verify out of bounds (" << pos2.first << "," << pos2.second
+            << "): " << res2 << std::endl;
+
+  std::pair<int, int> pos3(3, 3);
+  auto res3 = test3.verify_out_of_bounds(pos3);
+  std::cout << "Verify out of bounds (" << pos3.first << "," << pos3.second
+            << "): " << res3 << std::endl;
 }

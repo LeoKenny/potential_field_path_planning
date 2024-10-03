@@ -34,6 +34,17 @@ template <typename T> const std::size_t Matrix<T>::getRows() const {
   return data.size();
 }
 
+template <typename T>
+const bool
+Matrix<T>::verify_out_of_bounds(const std::pair<int, int> &index) const {
+  std::cout << "(Rows, Cols) - " << getRows() << "," << getCols() << std::endl;
+  if ((index.first < getRows()) & (index.second < getCols()) &
+      (index.first >= 0) & (index.second >= 0))
+    return 0;
+
+  return 1;
+}
+
 template <typename T> void Matrix<T>::fill(T value) {
   const std::size_t rows = getRows();
   const std::size_t cols = getCols();
