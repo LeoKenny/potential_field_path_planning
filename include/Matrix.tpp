@@ -44,6 +44,29 @@ template <typename T> void Matrix<T>::fill(T value) {
   }
 }
 
+template <typename T> Matrix<T> Matrix<T>::copy() const {
+  Matrix new_matrix(getRows(), getCols());
+  for (std::size_t i = 0; i < getRows(); i++) {
+    std::copy(data[i].begin(), data[i].end(), new_matrix[i].begin());
+  }
+  return new_matrix;
+}
+
+template <typename T> void Matrix<T>::copy_non_zero_values(Matrix &source) {
+  if (source.getRows() != getRows() || source.getCols() != getCols()) {
+    std::cerr << "Error: Matrices dimensions must match for copy non zero "
+                 "values operation."
+              << std::endl;
+  }
+  for (std::size_t i = 0; i < getRows(); i++) {
+    for (std::size_t j = 0; j < getCols(); j++) {
+      if (source[i][j] != 0) {
+        data[i][j] = source[i][j];
+      }
+    }
+  }
+}
+
 template <typename T> Matrix<T> Matrix<T>::pad_with_value(T value) {
   const std::size_t rows = getRows();
   const std::size_t cols = getCols();

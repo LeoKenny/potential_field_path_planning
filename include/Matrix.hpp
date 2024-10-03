@@ -29,6 +29,8 @@ public:
   const std::size_t getRows() const;
 
   void fill(T value);
+  Matrix<T> copy() const;
+  void copy_non_zero_values(Matrix &source);
   Matrix<T> pad();
   Matrix<T> pad_with_value(T value);
   Matrix<T> slice(std::pair<std::size_t, std::size_t> start,
