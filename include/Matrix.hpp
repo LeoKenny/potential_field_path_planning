@@ -25,12 +25,14 @@ public:
   std::vector<T> &operator[](const std::pair<int, int> &index);
   std::vector<T> &operator[](const std::pair<float, float> &index);
 
-  const int getCols() const;
-  const int getRows() const;
+  const std::size_t getCols() const;
+  const std::size_t getRows() const;
 
   void fill(T value);
   Matrix<T> pad();
   Matrix<T> pad_with_value(T value);
+  Matrix<T> slice(std::pair<std::size_t, std::size_t> start,
+                  std::pair<std::size_t, std::size_t> end);
   void print(const std::string file_name) const;
 };
 
