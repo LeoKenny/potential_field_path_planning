@@ -4,10 +4,10 @@
 int main() {
   Matrix<int> test(4, 3);
   test.fill(0);
-  test.data[1][0] = 3;
-  test.data[2][1] = 5;
-  test.data[1][2] = 8;
-  test.data[0][1] = 10;
+  test[1][0] = 3;
+  test[2][1] = 5;
+  test[1][2] = 8;
+  test[0][1] = 10;
   test.print("test.csv");
 
   auto padded = test.pad();
@@ -19,6 +19,16 @@ int main() {
   std::pair<std::size_t, std::size_t> end;
   end.first = 1;
   end.second = 1;
+  std::pair<std::size_t, std::size_t> other;
+  other.first = 2;
+  other.second = 3;
+
+  std::cout << "Taking Value Start: " << padded[start] << std::endl;
+  std::cout << "Taking Value End: " << padded[end] << std::endl;
+  std::cout << "Taking Value Other: " << padded[other] << std::endl;
+  padded[other] = 69;
+  std::cout << "Taking Value New Other: " << padded[other] << std::endl;
+
   auto sliced = padded.slice(start, end);
   sliced.print("sliced.csv");
 

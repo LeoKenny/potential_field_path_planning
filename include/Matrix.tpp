@@ -1,4 +1,5 @@
 #include <cstddef>
+
 template <typename T>
 Matrix<T>::Matrix(const int rows, const int cols)
     : data(rows, std::vector<T>(cols, 0)) {}
@@ -13,17 +14,22 @@ std::vector<T> &Matrix<T>::operator[](const std::size_t index) {
 }
 
 template <typename T> std::vector<T> &Matrix<T>::operator[](const float index) {
-  return data[int(index)];
+  return data[size_t(index)];
 }
 
 template <typename T>
-std::vector<T> &Matrix<T>::operator[](const std::pair<int, int> &index) {
+T &Matrix<T>::operator[](const std::pair<std::size_t, std::size_t> index) {
   return data[index.first][index.second];
 }
 
 template <typename T>
-std::vector<T> &Matrix<T>::operator[](const std::pair<float, float> &index) {
-  return data[int(index.first)][int(index.second)];
+T &Matrix<T>::operator[](const std::pair<int, int> index) {
+  return data[index.first][index.second];
+}
+
+template <typename T>
+T &Matrix<T>::operator[](const std::pair<float, float> index) {
+  return data[std::size_t(index.first)][std::size_t(index.second)];
 }
 
 template <typename T> const std::size_t Matrix<T>::getCols() const {

@@ -10,28 +10,25 @@
 
 template <typename T> class Matrix {
 private:
-  const int goal_field = -1;
-  const int obstacle_field = 1;
-  const int free_space = 0;
-
-public:
   std::vector<std::vector<T>> data;
 
+public:
   Matrix(const int rows, const int cols);
 
   std::vector<T> &operator[](const int index);
   std::vector<T> &operator[](const std::size_t index);
   std::vector<T> &operator[](const float index);
-  std::vector<T> &operator[](const std::pair<int, int> &index);
-  std::vector<T> &operator[](const std::pair<float, float> &index);
+  T &operator[](const std::pair<int, int> index);
+  T &operator[](const std::pair<std::size_t, std::size_t> index);
+  T &operator[](const std::pair<float, float> index);
 
   const std::size_t getCols() const;
   const std::size_t getRows() const;
   const bool verify_out_of_bounds(const std::pair<int, int> &index) const;
 
   void fill(T value);
-  Matrix<T> copy() const;
   void copy_non_zero_values(Matrix &source);
+  Matrix<T> copy() const;
   Matrix<T> pad();
   Matrix<T> pad_with_value(T value);
   Matrix<T> slice(std::pair<std::size_t, std::size_t> start,
