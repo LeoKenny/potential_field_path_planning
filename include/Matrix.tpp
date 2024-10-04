@@ -43,7 +43,6 @@ template <typename T> const std::size_t Matrix<T>::getRows() const {
 template <typename T>
 const bool
 Matrix<T>::verify_out_of_bounds(const std::pair<int, int> &index) const {
-  std::cout << "(Rows, Cols) - " << getRows() << "," << getCols() << std::endl;
   if ((index.first < getRows()) & (index.second < getCols()) &
       (index.first >= 0) & (index.second >= 0))
     return 0;
@@ -157,9 +156,6 @@ Matrix<T> Matrix<T>::slice(std::pair<std::size_t, std::size_t> start,
   if (end.second >= getCols())
     end.second = getCols() - 1;
 
-  std::cout << "Start (" << start.first << "," << start.second << ") \t End ("
-            << end.first << "," << end.second << ")" << std::endl;
-
   if (end.first < start.first) {
     lower_limit_rows = end.first;
     size_rows = start.first - end.first;
@@ -178,16 +174,9 @@ Matrix<T> Matrix<T>::slice(std::pair<std::size_t, std::size_t> start,
   }
   size_cols++;
 
-  std::cout << "Lower Limits: (" << lower_limit_rows << "," << lower_limit_cols
-            << ") \t Size (" << size_rows << "," << size_cols << ")"
-            << std::endl;
-
   Matrix<T> sliced(size_rows, size_cols);
 
   for (std::size_t i = 0; i < size_rows; i++) {
-    /*for (std::size_t j = 0; j < size_cols; j++) {*/
-    /*  sliced[i][j] = data[lower_limit_rows + i][lower_limit_cols + j];*/
-    /*}*/
     std::copy(data[lower_limit_rows + i].begin() + lower_limit_cols,
               data[lower_limit_rows + i].begin() + lower_limit_cols + size_cols,
               sliced[i].begin());
