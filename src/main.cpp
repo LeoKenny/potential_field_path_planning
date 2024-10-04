@@ -1,4 +1,5 @@
 #include "Matrix.hpp"
+#include "PotentialField.hpp"
 #include <iostream>
 
 int main() {
@@ -54,4 +55,9 @@ int main() {
   auto res3 = test3.verify_out_of_bounds(pos3);
   std::cout << "Verify out of bounds (" << pos3.first << "," << pos3.second
             << "): " << res3 << std::endl;
+
+  Matrix<double> test4(5, 5);
+  test4.fill(1);
+  PotentialField pot(test4);
+  pot.print_map();
 }
