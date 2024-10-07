@@ -72,6 +72,14 @@ PotentialField<T>::make_index_list() {
   return index_list;
 }
 
+template <typename T>
+std::pair<T, T> PotentialField<T>::get_gradient(std::size_t row,
+                                                std::size_t col) {
+  T vector_x = field_array[row][col - 1] - field_array[row][col + 1];
+  T vector_y = field_array[row - 1][col] - field_array[row + 1][col];
+  return std::make_pair(vector_x, vector_y);
+}
+
 template <typename T> void PotentialField<T>::gauss_seidel(void) {
   epsilon = std::numeric_limits<T>::max();
 

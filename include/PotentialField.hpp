@@ -12,10 +12,12 @@ private:
   Matrix<T> map_array;   // Array with informations about the ambient,
                          // obstacles, objective, unreachable places, ...
   Matrix<T> field_array; // Calculated field for input map array
-  T min_epsilon = 1e-4;  // Smalles field difference for iteration stop
-  T epsilon;             // Calculated field difference between iterations
+
+  T min_epsilon = 1e-4; // Smallest field difference for iteration to stop
+  T epsilon;            // Calculated field difference between iterations
+
   std::size_t max_iterations = 1e4; // Maximum iterations for field calculation
-  std::size_t iterated; // Iterations executed before stopping calculation
+  std::size_t iterated = 0; // Iterations executed before stopping calculation
 
 public:
   PotentialField(const Matrix<T> &input_matrix)
@@ -36,6 +38,7 @@ public:
            4;
   }
 
+  std::pair<T, T> get_gradient(std::size_t row, std::size_t col);
   void set_min_epsilon(T value);
   T get_min_epsilon(void);
   T get_epsilon(void);
