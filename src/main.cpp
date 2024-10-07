@@ -60,10 +60,19 @@ int main() {
   test4.fill(0);
   auto test5 = test4.pad_with_value(1);
   test5[50][50] = -1;
-  PotentialField pot(test5);
+  PotentialField<double> pot(test5);
   pot.gauss_seidel();
   pot.print_map();
   pot.print_field();
-  std::cout << "Iterations: " << pot.iterated << "\nEpsilon: " << pot.epsilon
-            << std::endl;
+  std::cout << "Iterations: " << pot.get_iterated()
+            << "\nEpsilon: " << pot.get_epsilon() << std::endl;
+
+  Matrix<float> test6(100, 100);
+  test6.fill(0);
+  auto test7 = test6.pad_with_value(1);
+  test6[50][50] = -1;
+  PotentialField<float> pot2(test6);
+  pot2.gauss_seidel();
+  std::cout << "Iterations: " << pot2.get_iterated()
+            << "\nEpsilon: " << pot2.get_epsilon() << std::endl;
 }

@@ -1,10 +1,38 @@
 #include <PotentialField.hpp>
 
-void PotentialField::print_map(void) { map_array.print("map_array.csv"); }
-void PotentialField::print_field(void) { field_array.print("field_array.csv"); }
+template <typename T> void PotentialField<T>::print_map(void) {
+  map_array.print("map_array.csv");
+}
+template <typename T> void PotentialField<T>::print_field(void) {
+  field_array.print("field_array.csv");
+}
 
+template <typename T>
+void PotentialField<T>::set_max_iterations(std::size_t value) {
+  max_iterations = value;
+}
+
+template <typename T> std::size_t PotentialField<T>::get_max_iterations(void) {
+  return max_iterations;
+}
+
+template <typename T> std::size_t PotentialField<T>::get_iterated(void) {
+  return iterated;
+}
+
+template <typename T> T PotentialField<T>::get_min_epsilon(void) {
+  return min_epsilon;
+}
+
+template <typename T> void PotentialField<T>::set_min_epsilon(T value) {
+  min_epsilon = value;
+}
+
+template <typename T> T PotentialField<T>::get_epsilon(void) { return epsilon; }
+
+template <typename T>
 std::vector<std::pair<std::size_t, std::size_t>>
-PotentialField::make_index_list() {
+PotentialField<T>::make_index_list() {
   std::vector<std::pair<std::size_t, std::size_t>> index_list;
   std::size_t rows = map_array.getRows();
   std::size_t cols = map_array.getCols();
@@ -44,8 +72,8 @@ PotentialField::make_index_list() {
   return index_list;
 }
 
-void PotentialField::gauss_seidel() {
-  epsilon = std::numeric_limits<double>::max();
+template <typename T> void PotentialField<T>::gauss_seidel(void) {
+  epsilon = std::numeric_limits<T>::max();
 
   map_array = map_array.pad();
 
