@@ -26,6 +26,7 @@ public:
   std::size_t getRows() const;
 
   bool verify_out_of_bounds(const std::pair<std::size_t, std::size_t> &index);
+  T calculate_max_difference(Matrix<T> &second);
 
   void fill(T value);
   void copy_non_zero_values(Matrix &source);

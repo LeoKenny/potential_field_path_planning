@@ -1,5 +1,4 @@
 #include <cstddef>
-
 template <typename T>
 Matrix<T>::Matrix(const int rows, const int cols)
     : data(rows, std::vector<T>(cols, 0)) {}
@@ -199,4 +198,27 @@ template <typename T> void Matrix<T>::print(const std::string file_name) const {
   } else {
     std::cerr << "Unable to open file: " << file_name << std::endl;
   }
+}
+
+template <typename T> T Matrix<T>::calculate_max_difference(Matrix<T> &second) {
+  std::size_t cols = getCols();
+  std::size_t rows = getRows();
+  T diff;
+  T largest_diff = 0;
+
+  if ((cols != second.getCols()) || (rows != second.getRows())) {
+    std::cerr << "Min difference failed. (row,col) Source(" << rows << ","
+              << cols << ") Second (" << second.getRows() << ","
+              << second.getCols() << ")" << std::endl;
+    return -1;
+  } else {
+    for (std::size_t i = 0; i < rows; i++) {
+      for (std::size_t j = 0; j < cols; j++) {
+        diff = std::abs(data[i][j] - second[i][j]);
+        if (diff > largest_diff)
+          largest_diff = diff;
+      }
+    }
+  }
+  return largest_diff;
 }
