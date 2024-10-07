@@ -1,6 +1,10 @@
 #include "Matrix.hpp"
 #include "PotentialField.hpp"
+#include "TrajectoryPlanning.hpp"
+
+#include <cstddef>
 #include <iostream>
+#include <utility>
 
 int main() {
   Matrix<int> test(4, 3);
@@ -75,4 +79,7 @@ int main() {
   pot2.gauss_seidel();
   std::cout << "Iterations: " << pot2.get_iterated()
             << "\nEpsilon: " << pot2.get_epsilon() << std::endl;
+
+  TrajectoryPlanning tp(pot);
+  tp.plan_path(start);
 }
