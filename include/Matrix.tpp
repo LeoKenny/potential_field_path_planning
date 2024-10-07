@@ -32,19 +32,18 @@ T &Matrix<T>::operator[](const std::pair<float, float> index) {
   return data[std::size_t(index.first)][std::size_t(index.second)];
 }
 
-template <typename T> const std::size_t Matrix<T>::getCols() const {
+template <typename T> std::size_t Matrix<T>::getCols() const {
   return data[0].size();
 }
 
-template <typename T> const std::size_t Matrix<T>::getRows() const {
+template <typename T> std::size_t Matrix<T>::getRows() const {
   return data.size();
 }
 
 template <typename T>
-const bool
-Matrix<T>::verify_out_of_bounds(const std::pair<int, int> &index) const {
-  if ((index.first < getRows()) & (index.second < getCols()) &
-      (index.first >= 0) & (index.second >= 0))
+bool Matrix<T>::verify_out_of_bounds(
+    const std::pair<std::size_t, std::size_t> &index) {
+  if ((index.first < getRows()) & (index.second < getCols()))
     return 0;
 
   return 1;
@@ -189,8 +188,8 @@ template <typename T> void Matrix<T>::print(const std::string file_name) const {
   std::ofstream file(file_name);
   if (file.is_open()) {
     file << std::fixed << std::setprecision(std::numeric_limits<T>::digits10);
-    const int rows = getRows();
-    const int cols = getCols();
+    std::size_t rows = getRows();
+    std::size_t cols = getCols();
     for (std::size_t i = 0; i < rows; i++) {
       for (std::size_t j = 0; j < cols; j++) {
         file << data[i][j] << ",\t";

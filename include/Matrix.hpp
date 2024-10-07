@@ -22,9 +22,10 @@ public:
   T &operator[](const std::pair<std::size_t, std::size_t> index);
   T &operator[](const std::pair<float, float> index);
 
-  const std::size_t getCols() const;
-  const std::size_t getRows() const;
-  const bool verify_out_of_bounds(const std::pair<int, int> &index) const;
+  std::size_t getCols() const;
+  std::size_t getRows() const;
+
+  bool verify_out_of_bounds(const std::pair<std::size_t, std::size_t> &index);
 
   void fill(T value);
   void copy_non_zero_values(Matrix &source);
