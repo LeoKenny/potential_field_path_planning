@@ -27,7 +27,7 @@ int main() {
   std::cout << "Taking Value Start: " << padded[start] << std::endl;
   std::cout << "Taking Value End: " << padded[end] << std::endl;
   std::cout << "Taking Value Other: " << padded[other] << std::endl;
-  padded[other] = 69;
+  padded[other] = 99;
   std::cout << "Taking Value New Other: " << padded[other] << std::endl;
 
   auto sliced = padded.slice(start, end);
@@ -56,8 +56,14 @@ int main() {
   std::cout << "Verify out of bounds (" << pos3.first << "," << pos3.second
             << "): " << res3 << std::endl;
 
-  Matrix<double> test4(5, 5);
-  test4.fill(1);
-  PotentialField pot(test4);
+  Matrix<double> test4(100, 100);
+  test4.fill(0);
+  auto test5 = test4.pad_with_value(1);
+  test5[50][50] = -1;
+  PotentialField pot(test5);
+  pot.gauss_seidel();
   pot.print_map();
+  pot.print_field();
+  std::cout << "Iterations: " << pot.iterated << "\nEpsilon: " << pot.epsilon
+            << std::endl;
 }
