@@ -43,9 +43,8 @@ private:
   double eta;                 // Maximum percentage of speed variation per step
   double Vmax;                // Maximum speed [m/s]
   double robot_movement_step; // Robot movement between steps [m]
-  float colision_distance = 1.1; // Robot colision verification distance [m]
-
-  float min_goal_distance = 2;
+  float colision_distance = 1.1;  // Robot colision verification distance [m]
+  float objective_distance = 0.2; // Robot objective verification distance [m]
 
 public:
   TrajectoryPlanning(const PotentialField<double> &input, double resolution,

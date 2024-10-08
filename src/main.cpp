@@ -92,7 +92,7 @@ int main() {
   TrajectoryPlanning tp(pot, resolution, max_iterations, rmax_obstacle,
                         rmax_objective, alpha, eta, Vmax, robot_movement_step);
   std::pair<double, double> robot_start;
-  robot_start.first = 1;
-  robot_start.second = 1;
+  robot_start.first = 2;
+  robot_start.second = 2;
   tp.plan_path(robot_start);
 }

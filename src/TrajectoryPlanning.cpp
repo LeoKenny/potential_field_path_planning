@@ -11,9 +11,9 @@ void TrajectoryPlanning::set_max_iterations(std::size_t value) {
 
 void TrajectoryPlanning::plan_path(std::pair<double, double> start_position) {
   Command cmd, previous_cmd;
-  std::vector<Command> command_list;
   bool run_flag = true;
 
+  path.clear();
   iterated = 0;
   cmd.position = start_position;
   cmd.grid_position =
@@ -22,15 +22,25 @@ void TrajectoryPlanning::plan_path(std::pair<double, double> start_position) {
 
   for (iterated = 0;
        (iterated < max_iterations) &&
-       pf.verify_out_of_bounds(cmd.grid_position) &&
-       (get_min_obst_distance(cmd.grid_position) > colision_distance);
+       (pf.verify_out_of_bounds(cmd.grid_position) == false) &&
+       (get_min_obst_distance(cmd.grid_position) > colision_distance) &&
+       (get_objective_distance(cmd.grid_position) > objective_distance);
        iterated++) {
     get_smooth_gradient(&cmd);
     get_velocity(cmd, previous_cmd);
-    command_list.push_back(cmd);
+    path.push_back(cmd);
     previous_cmd = cmd;
     cmd = get_next_position(cmd);
   }
+  if (pf.verify_out_of_bounds(cmd.grid_position))
+    std::cerr << "Out of bounds." << std::endl;
+  if (iterated >= max_iterations)
+    std::cerr << "Maximum iterations executed." << std::endl;
+  if (get_min_obst_distance(cmd.grid_position) <= colision_distance)
+    std::cerr << "Colision detected: "
+              << get_min_obst_distance(cmd.grid_position) << std::endl;
+  if (get_objective_distance(cmd.grid_position) <= objective_distance)
+    std::cerr << "Objective reached." << std::endl;
 }
 
 Command TrajectoryPlanning::get_next_position(const Command &cmd) {
