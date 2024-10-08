@@ -80,6 +80,14 @@ int main() {
   std::cout << "Iterations: " << pot2.get_iterated()
             << "\nEpsilon: " << pot2.get_epsilon() << std::endl;
 
-  TrajectoryPlanning tp(pot);
+  std::size_t max_iterations = 5;
+  double rmax_obstacle = 22;
+  double rmax_objective = 40;
+  double alpha = 0.01;
+  double eta = 0.1;
+  double Vmax = 1.0;
+
+  TrajectoryPlanning tp(pot, max_iterations, rmax_obstacle, rmax_objective,
+                        alpha, eta, Vmax);
   tp.plan_path(start);
 }
