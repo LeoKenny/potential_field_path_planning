@@ -81,6 +81,35 @@ double TrajectoryPlanning::get_min_obst_distance(
   return smallest_distance;
 }
 
+double TrajectoryPlanning::get_objective_distance(
+    const std::pair<std::size_t, std::size_t> &position) {
+  double distance;
+  double smallest_distance = std::sqrt(2 * std::pow(rmax_objective, 2));
+  long int limits = rmax_objective / resolution;
+  std::pair<std::size_t, std::size_t> grid_position = {0, 0};
+
+  for (long i = -limits; i <= limits; i++) {
+    for (long j = -limits; j <= limits; j++) {
+      if (-(long long)position.first > i)
+        continue;
+      if (-(long long)position.second > j)
+        continue;
+      grid_position.first = position.first + i;
+      grid_position.second = position.second + j;
+      if (pf.verify_out_of_bounds(grid_position))
+        continue;
+      if (pf[grid_position] == OBJECTIVE) {
+        distance = std::sqrt(std::pow(i * resolution, 2) +
+                             std::pow(j * resolution, 2));
+        if (distance < smallest_distance)
+          smallest_distance = distance;
+      }
+    }
+  }
+
+  return smallest_distance;
+}
+
 void TrajectoryPlanning::get_velocity(Command &cmd, Command &previous_cmd) {
   double Ve;                // Estimated Velocity
   double Vf;                // Final Velocity
@@ -104,10 +133,9 @@ void TrajectoryPlanning::get_velocity(Command &cmd, Command &previous_cmd) {
 
   // Get smallest rho value for velocity calculation
   min_obst_distance = get_min_obst_distance(cmd.id);
-  std::cout << "Distance: " << min_obst_distance << std::endl;
-  /*objective_distance = get_objective_distance();*/
-  /*min_obst_distance = 10;*/
-  objective_distance = 20;
+  std::cout << "Obst Distance: " << min_obst_distance << std::endl;
+  objective_distance = get_objective_distance(cmd.id);
+  std::cout << "Objective Distance: " << objective_distance << std::endl;
 
   if (min_obst_distance < rmax_obstacle)
     rho_obstacle = min_obst_distance / rmax_obstacle;

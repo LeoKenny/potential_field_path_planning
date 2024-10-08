@@ -63,6 +63,8 @@ public:
   void get_velocity(Command &cmd, Command &previous_cmd);
   double
   get_min_obst_distance(const std::pair<std::size_t, std::size_t> &position);
+  double
+  get_objective_distance(const std::pair<std::size_t, std::size_t> &position);
 
   void plan_path(std::pair<std::size_t, std::size_t> start_position);
 };
