@@ -20,7 +20,11 @@ void TrajectoryPlanning::plan_path(std::pair<double, double> start_position) {
       std::make_pair((std::size_t)(start_position.first / resolution),
                      (std::size_t)(start_position.second / resolution));
 
-  for (iterated = 0; iterated < max_iterations; iterated++) {
+  for (iterated = 0;
+       (iterated < max_iterations) &&
+       pf.verify_out_of_bounds(cmd.grid_position) &&
+       (get_min_obst_distance(cmd.grid_position) > colision_distance);
+       iterated++) {
     get_smooth_gradient(&cmd);
     get_velocity(cmd, previous_cmd);
     command_list.push_back(cmd);
