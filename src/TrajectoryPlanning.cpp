@@ -13,13 +13,16 @@ void TrajectoryPlanning::set_max_iterations(std::size_t value) {
   max_iterations = value;
 }
 
-void TrajectoryPlanning::plan_path(
-    std::pair<std::size_t, std::size_t> start_position) {
+void TrajectoryPlanning::plan_path(std::pair<double, double> start_position) {
   Command cmd, previous_cmd;
+  std::vector<Command> command_list;
   bool run_flag = true;
 
   iterated = 0;
-  cmd.id = start_position;
+  cmd.position = start_position;
+  cmd.grid_position =
+      std::make_pair((std::size_t)(start_position.first / resolution),
+                     (std::size_t)(start_position.second / resolution));
 
   for (iterated = 0; iterated < max_iterations; iterated++) {
     get_smooth_gradient(&cmd);
@@ -38,7 +41,8 @@ void TrajectoryPlanning::get_smooth_gradient(Command *cmd) {
   std::pair<double, double> gradient = {0, 0};
   for (int i = -1; i <= 1; i++) {
     for (int j = -1; j <= 1; j++) {
-      gradient = pf.get_gradient(cmd->id.first + j, cmd->id.second + i);
+      gradient = pf.get_gradient(cmd->grid_position.first + j,
+                                 cmd->grid_position.second + i);
       gradient_x += gradient.first;
       gradient_y += gradient.second;
       iterated_cells++;
@@ -132,10 +136,8 @@ void TrajectoryPlanning::get_velocity(Command &cmd, Command &previous_cmd) {
     ph += FULL_MOVEMENT_RANGE_ANGLE;
 
   // Get smallest rho value for velocity calculation
-  min_obst_distance = get_min_obst_distance(cmd.id);
-  std::cout << "Obst Distance: " << min_obst_distance << std::endl;
-  objective_distance = get_objective_distance(cmd.id);
-  std::cout << "Objective Distance: " << objective_distance << std::endl;
+  min_obst_distance = get_min_obst_distance(cmd.grid_position);
+  objective_distance = get_objective_distance(cmd.grid_position);
 
   if (min_obst_distance < rmax_obstacle)
     rho_obstacle = min_obst_distance / rmax_obstacle;

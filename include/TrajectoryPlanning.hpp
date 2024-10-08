@@ -13,7 +13,7 @@
 constexpr std::pair<std::size_t, std::size_t> NO_NODE(-1, -1);
 
 struct Command {
-  std::pair<std::size_t, std::size_t> id = NO_NODE;
+  std::pair<std::size_t, std::size_t> grid_position = NO_NODE;
   std::pair<double, double> position = {0, 0};
   std::pair<double, double> gradient = {0, 0};
   double mag_gradient = 0;
@@ -66,7 +66,7 @@ public:
   double
   get_objective_distance(const std::pair<std::size_t, std::size_t> &position);
 
-  void plan_path(std::pair<std::size_t, std::size_t> start_position);
+  void plan_path(std::pair<double, double> start_position);
 };
 
 #endif // TRAJECTORYPLANNING_HPP
