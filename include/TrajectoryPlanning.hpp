@@ -34,11 +34,12 @@ private:
   PotentialField<double> pf;  // Potential Field element used for path planning
   std::size_t max_iterations; // Maximum number of iterations/steps
   std::size_t iterated;       // Number of iterations used in the planned path
-  double rmax_obstacle;       // Distance used for rho obstacle
-  double rmax_objective;      // Distance used for rho goal
+  double resolution;          // Map resolution [m]
+  double rmax_obstacle;       // Distance used for rho obstacle [m]
+  double rmax_objective;      // Distance used for rho goal [m]
   double alpha;               // Percentage of the max velocity that is fixed
-  double eta;                 // Maximum percentage of speed variation
-  double Vmax;                // Maximum speed
+  double eta;                 // Maximum percentage of speed variation per step
+  double Vmax;                // Maximum speed [m/s]
 
   float min_goal_distance = 2;
   float residual_x = 0;
@@ -46,12 +47,13 @@ private:
   float residual_y = 0;
 
 public:
-  TrajectoryPlanning(const PotentialField<double> &input,
+  TrajectoryPlanning(const PotentialField<double> &input, double resolution,
                      std::size_t max_iterations, double rmax_obstacle,
                      double rmax_objective, double alpha, double eta,
                      double Vmax)
-      : pf(input), max_iterations(max_iterations), rmax_obstacle(rmax_obstacle),
-        rmax_objective(rmax_objective), alpha(alpha), eta(eta), Vmax(Vmax) {}
+      : pf(input), max_iterations(max_iterations), resolution(resolution),
+        rmax_obstacle(rmax_obstacle), rmax_objective(rmax_objective),
+        alpha(alpha), eta(eta), Vmax(Vmax) {}
 
   std::size_t get_iterated();
   std::size_t get_max_iterations();
@@ -59,6 +61,8 @@ public:
 
   void get_smooth_gradient(Command *cmd);
   void get_velocity(Command &cmd, Command &previous_cmd);
+  double
+  get_min_obst_distance(const std::pair<std::size_t, std::size_t> &position);
 
   void plan_path(std::pair<std::size_t, std::size_t> start_position);
 };

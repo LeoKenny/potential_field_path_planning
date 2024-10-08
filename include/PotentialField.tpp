@@ -8,6 +8,18 @@ template <typename T> void PotentialField<T>::print_field(void) {
 }
 
 template <typename T>
+T PotentialField<T>::operator[](
+    const std::pair<std::size_t, std::size_t> &index) {
+  return field_array[index.first][index.second];
+}
+
+template <typename T>
+bool PotentialField<T>::verify_out_of_bounds(
+    const std::pair<std::size_t, std::size_t> &index) {
+  return field_array.verify_out_of_bounds(index);
+}
+
+template <typename T>
 void PotentialField<T>::set_max_iterations(std::size_t value) {
   max_iterations = value;
 }

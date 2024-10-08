@@ -37,6 +37,8 @@ public:
             field_array[index.first][index.second + 1]) /
            4;
   }
+  T operator[](const std::pair<std::size_t, std::size_t> &index);
+  bool verify_out_of_bounds(const std::pair<std::size_t, std::size_t> &index);
 
   std::pair<T, T> get_gradient(std::size_t row, std::size_t col);
   void set_min_epsilon(T value);

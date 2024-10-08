@@ -1,4 +1,5 @@
 #include <cmath>
+#include <cstddef>
 #include <cstdlib>
 
 #include <TrajectoryPlanning.hpp>
@@ -51,6 +52,35 @@ void TrajectoryPlanning::get_smooth_gradient(Command *cmd) {
                                 std::pow(cmd->gradient.first, 2));
 }
 
+double TrajectoryPlanning::get_min_obst_distance(
+    const std::pair<std::size_t, std::size_t> &position) {
+  double distance;
+  double smallest_distance = std::sqrt(2 * std::pow(rmax_obstacle, 2));
+  long int limits = rmax_obstacle / resolution;
+  std::pair<std::size_t, std::size_t> grid_position = {0, 0};
+
+  for (long i = -limits; i <= limits; i++) {
+    for (long j = -limits; j <= limits; j++) {
+      if (-(long long)position.first > i)
+        continue;
+      if (-(long long)position.second > j)
+        continue;
+      grid_position.first = position.first + i;
+      grid_position.second = position.second + j;
+      if (pf.verify_out_of_bounds(grid_position))
+        continue;
+      if (pf[grid_position] == OBSTACLE) {
+        distance = std::sqrt(std::pow(i * resolution, 2) +
+                             std::pow(j * resolution, 2));
+        if (distance < smallest_distance)
+          smallest_distance = distance;
+      }
+    }
+  }
+
+  return smallest_distance;
+}
+
 void TrajectoryPlanning::get_velocity(Command &cmd, Command &previous_cmd) {
   double Ve;                // Estimated Velocity
   double Vf;                // Final Velocity
@@ -73,9 +103,10 @@ void TrajectoryPlanning::get_velocity(Command &cmd, Command &previous_cmd) {
     ph += FULL_MOVEMENT_RANGE_ANGLE;
 
   // Get smallest rho value for velocity calculation
-  /*min_obst_distance = get_min_obst_distance();*/
+  min_obst_distance = get_min_obst_distance(cmd.id);
+  std::cout << "Distance: " << min_obst_distance << std::endl;
   /*objective_distance = get_objective_distance();*/
-  min_obst_distance = 10;
+  /*min_obst_distance = 10;*/
   objective_distance = 20;
 
   if (min_obst_distance < rmax_obstacle)
