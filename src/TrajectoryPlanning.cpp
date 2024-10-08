@@ -1,7 +1,3 @@
-#include <cmath>
-#include <cstddef>
-#include <cstdlib>
-
 #include <TrajectoryPlanning.hpp>
 
 #define HALF_MOVEMENT_RANGE_ANGLE 180.0
@@ -26,12 +22,24 @@ void TrajectoryPlanning::plan_path(std::pair<double, double> start_position) {
 
   for (iterated = 0; iterated < max_iterations; iterated++) {
     get_smooth_gradient(&cmd);
-    std::cout << "Mag Gradient: " << cmd.mag_gradient
-              << "\nAngle Gradient: " << cmd.angle_gradient << std::endl;
     get_velocity(cmd, previous_cmd);
-    std::cout << "Mag Velocity: " << cmd.mag_velocity
-              << "\nAngle Velocity: " << cmd.angle_velocity << std::endl;
+    command_list.push_back(cmd);
+    previous_cmd = cmd;
+    cmd = get_next_position(cmd);
   }
+}
+
+Command TrajectoryPlanning::get_next_position(const Command &cmd) {
+  Command next;
+  next.position.first =
+      std::sin(M_PI * cmd.angle_velocity / 180) * robot_movement_step;
+  next.position.second =
+      std::cos(M_PI * cmd.angle_velocity / 180) * robot_movement_step;
+  next.position.first += cmd.position.first;
+  next.position.second += cmd.position.second;
+  next.grid_position.first = (std::size_t)next.position.first / resolution;
+  next.grid_position.second = (std::size_t)next.position.second / resolution;
+  return next;
 }
 
 void TrajectoryPlanning::get_smooth_gradient(Command *cmd) {

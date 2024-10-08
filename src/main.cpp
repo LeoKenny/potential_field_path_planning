@@ -80,21 +80,18 @@ int main() {
   std::cout << "Iterations: " << pot2.get_iterated()
             << "\nEpsilon: " << pot2.get_epsilon() << std::endl;
 
-  std::size_t max_iterations = 1;
+  std::size_t max_iterations = 4;
   double resolution = 0.1;
   double rmax_obstacle = 22;
   double rmax_objective = 40;
   double alpha = 0.01;
   double eta = 0.1;
   double Vmax = 1.0;
+  double robot_movement_step = 1.0;
 
   TrajectoryPlanning tp(pot, resolution, max_iterations, rmax_obstacle,
-                        rmax_objective, alpha, eta, Vmax);
+                        rmax_objective, alpha, eta, Vmax, robot_movement_step);
   std::pair<double, double> robot_start;
-  robot_start.first = 0.5;
-  robot_start.second = 0.5;
-  tp.plan_path(robot_start);
-  std::cout << std::endl;
   robot_start.first = 1;
   robot_start.second = 1;
   tp.plan_path(robot_start);
