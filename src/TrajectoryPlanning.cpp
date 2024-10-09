@@ -51,8 +51,8 @@ Command TrajectoryPlanning::get_next_position(const Command &cmd) {
       std::cos(M_PI * cmd.angle_velocity / 180) * robot_movement_step;
   next.position.first += cmd.position.first;
   next.position.second += cmd.position.second;
-  next.grid_position.first = (std::size_t)next.position.first / resolution;
-  next.grid_position.second = (std::size_t)next.position.second / resolution;
+  next.grid_position.first = (std::size_t)(next.position.first / resolution);
+  next.grid_position.second = (std::size_t)(next.position.second / resolution);
   return next;
 }
 

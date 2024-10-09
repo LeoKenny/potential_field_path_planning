@@ -82,14 +82,14 @@ int main() {
   pot2.print_map("test6_map.csv");
   pot2.print_field("test6_field.csv");
 
-  std::size_t max_iterations = 4;
+  std::size_t max_iterations = 10;
   double resolution = 0.1;
   double rmax_obstacle = 22;
   double rmax_objective = 40;
   double alpha = 0.01;
   double eta = 0.1;
   double Vmax = 1.0;
-  double robot_movement_step = 1.0;
+  double robot_movement_step = 0.1;
 
   TrajectoryPlanning tp(pot, resolution, max_iterations, rmax_obstacle,
                         rmax_objective, alpha, eta, Vmax, robot_movement_step);
