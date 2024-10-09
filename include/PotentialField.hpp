@@ -6,6 +6,7 @@
 #define FREE_SPACE 0
 #define OBSTACLE 1
 #define OBJECTIVE -1
+#define PATH -4
 
 template <typename T> class PotentialField {
 private:
@@ -24,8 +25,6 @@ public:
       : map_array(input_matrix), field_array(input_matrix) {}
 
   std::vector<std::pair<std::size_t, std::size_t>> make_index_list();
-  void print_map(void);
-  void print_field(void);
 
   void gauss_seidel(void);
 
@@ -47,6 +46,12 @@ public:
   void set_max_iterations(std::size_t value);
   std::size_t get_max_iterations(void);
   std::size_t get_iterated(void);
+
+  Matrix<T> copy_map(void);
+  Matrix<T> copy_field(void);
+
+  void print_map(std::string file_name);
+  void print_field(std::string file_name);
 };
 
 #include "PotentialField.tpp" // To include template definitions

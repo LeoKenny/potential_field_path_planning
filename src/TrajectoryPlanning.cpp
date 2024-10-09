@@ -9,11 +9,11 @@ void TrajectoryPlanning::set_max_iterations(std::size_t value) {
   max_iterations = value;
 }
 
-void TrajectoryPlanning::plan_path(std::pair<double, double> start_position) {
+void TrajectoryPlanning::plan_trajectory(
+    std::pair<double, double> start_position) {
   Command cmd, previous_cmd;
-  bool run_flag = true;
 
-  path.clear();
+  cmd_list.clear();
   iterated = 0;
   cmd.position = start_position;
   cmd.grid_position =
@@ -28,7 +28,7 @@ void TrajectoryPlanning::plan_path(std::pair<double, double> start_position) {
        iterated++) {
     get_smooth_gradient(&cmd);
     get_velocity(cmd, previous_cmd);
-    path.push_back(cmd);
+    cmd_list.push_back(cmd);
     previous_cmd = cmd;
     cmd = get_next_position(cmd);
   }
@@ -175,6 +175,7 @@ void TrajectoryPlanning::get_velocity(Command &cmd, Command &previous_cmd) {
                            ((HALF_MOVEMENT_RANGE_ANGLE - std::abs(ph)) /
                             HALF_MOVEMENT_RANGE_ANGLE) *
                            rho);
+  cmd.Ve = Ve;
 
   // Calculate Final Velocity
   Vd = Ve - previous_cmd.mag_velocity;
@@ -188,3 +189,46 @@ void TrajectoryPlanning::get_velocity(Command &cmd, Command &previous_cmd) {
   else
     cmd.mag_velocity = Vf;
 }
+
+void TrajectoryPlanning::print_data(std::string file_name) {
+  std::ofstream file(file_name + "_data.csv");
+  if (file.is_open()) {
+    file << std::fixed << std::setprecision(8);
+    file << "PosX,PosY,Col,Row,Grad_Mag,Grad_Angle,Vel_Mag,Vel_Angle,Ve"
+         << std::endl;
+    for (auto &cmd : cmd_list) {
+      file << cmd.position.second << "," << cmd.position.first << ","
+           << cmd.grid_position.second << "," << cmd.grid_position.first << ","
+           << cmd.mag_gradient << "," << cmd.angle_gradient << ","
+           << cmd.mag_velocity << "," << cmd.angle_velocity << "," << cmd.Ve
+           << std::endl;
+    }
+  } else
+    std::cerr << "Failed to open file: " << file_name << std::endl;
+}
+
+void TrajectoryPlanning::print_field(std::string file_name) {
+  pf.print_field(file_name + "_field.csv");
+}
+
+void TrajectoryPlanning::print_field_with_path(std::string file_name) {
+  auto field_map = pf.copy_field();
+  for (auto &cmd : cmd_list) {
+    field_map[cmd.grid_position] = PATH;
+  }
+  field_map.print(file_name + "_field_w_path.csv");
+}
+
+void TrajectoryPlanning::print_map(std::string file_name) {
+  pf.print_map(file_name + "_map.csv");
+}
+
+void TrajectoryPlanning::print_map_with_path(std::string file_name) {
+  auto map = pf.copy_map();
+  for (auto &cmd : cmd_list) {
+    map[cmd.grid_position] = PATH;
+  }
+  map.print(file_name + "_map_w_path.csv");
+}
+
+std::vector<Command> TrajectoryPlanning::get_path() { return cmd_list; }

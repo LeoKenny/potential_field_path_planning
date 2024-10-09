@@ -66,8 +66,8 @@ int main() {
   test5[50][50] = -1;
   PotentialField<double> pot(test5);
   pot.gauss_seidel();
-  pot.print_map();
-  pot.print_field();
+  pot.print_map("test5_map.csv");
+  pot.print_field("test5_field.csv");
   std::cout << "Iterations: " << pot.get_iterated()
             << "\nEpsilon: " << pot.get_epsilon() << std::endl;
 
@@ -79,6 +79,8 @@ int main() {
   pot2.gauss_seidel();
   std::cout << "Iterations: " << pot2.get_iterated()
             << "\nEpsilon: " << pot2.get_epsilon() << std::endl;
+  pot2.print_map("test6_map.csv");
+  pot2.print_field("test6_field.csv");
 
   std::size_t max_iterations = 4;
   double resolution = 0.1;
@@ -94,5 +96,8 @@ int main() {
   std::pair<double, double> robot_start;
   robot_start.first = 2;
   robot_start.second = 2;
-  tp.plan_path(robot_start);
+  tp.plan_trajectory(robot_start);
+  tp.print_field_with_path("trajectory1");
+  tp.print_map_with_path("trajectory1");
+  tp.print_data("trajectory1");
 }

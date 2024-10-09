@@ -22,17 +22,12 @@ struct Command {
   double angle_gradient = 0;
   double mag_velocity = 0;
   double angle_velocity = 0;
-
-  float residual_x = 0;
-  float residual_y = 0;
   double Ve = 0;
-  double Vmax = 0;
-  float ph = 0;
 };
 
 class TrajectoryPlanning {
 private:
-  std::vector<Command> path;  // Path composed from commands
+  std::vector<Command> cmd_list; // List of commands that composes trajectory
   PotentialField<double> pf;  // Potential Field element used for path planning
   std::size_t max_iterations; // Maximum number of iterations/steps
   std::size_t iterated;       // Number of iterations used in the planned path
@@ -68,7 +63,14 @@ public:
   get_objective_distance(const std::pair<std::size_t, std::size_t> &position);
   Command get_next_position(const Command &cmd);
 
-  void plan_path(std::pair<double, double> start_position);
+  void plan_trajectory(std::pair<double, double> start_position);
+
+  void print_data(std::string file_name);
+  void print_field(std::string file_name);
+  void print_field_with_path(std::string file_name);
+  void print_map(std::string file_name);
+  void print_map_with_path(std::string file_name);
+  std::vector<Command> get_path();
 };
 
 #endif // TRAJECTORYPLANNING_HPP

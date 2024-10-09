@@ -1,10 +1,18 @@
 #include <PotentialField.hpp>
 
-template <typename T> void PotentialField<T>::print_map(void) {
-  map_array.print("map_array.csv");
+template <typename T> void PotentialField<T>::print_map(std::string file_name) {
+  map_array.print(file_name);
 }
-template <typename T> void PotentialField<T>::print_field(void) {
-  field_array.print("field_array.csv");
+template <typename T>
+void PotentialField<T>::print_field(std::string file_name) {
+  field_array.print(file_name);
+}
+
+template <typename T> Matrix<T> PotentialField<T>::copy_map(void) {
+  return map_array.copy();
+}
+template <typename T> Matrix<T> PotentialField<T>::copy_field(void) {
+  return field_array.copy();
 }
 
 template <typename T>
